@@ -85,9 +85,5 @@ module.exports = {
         token,
       };
     },
-
-    
-
-
-  }
+  },
 };
