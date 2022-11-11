@@ -8,12 +8,14 @@ import {
 import App from "./App";
 
 const httpLink = new HttpLink({
-  uri: "http://localhost:5000",
+  uri: "http://localhost:8002",
+  credentials: "same-origin",
 });
 
 const client = new ApolloClient({
-  uri: httpLink,
+  link: httpLink,
   cache: new InMemoryCache(),
+  connectToDevTools: true,
 });
 
 export default (
