@@ -16,7 +16,7 @@ const PostCard = ({
     <Card fluid>
       <Card.Content>
         <Image
-          floated="right"
+          floated="left"
           size="mini"
           src="https://react.semantic-ui.com/images/avatar/large/molly.png"
         />

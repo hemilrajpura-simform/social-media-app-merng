@@ -26,7 +26,7 @@ const Home = () => {
               {/* <Image src="https://}react.semantic-ui.com/images/wireframe/media-paragraph.png" /> */}
             </Grid.Column>
           ))
-        )}
+        )} 
       </Grid.Row>
     </Grid>
   );
