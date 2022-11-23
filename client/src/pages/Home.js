@@ -5,9 +5,6 @@ import { Grid, Image } from "semantic-ui-react";
 import PostCard from "../components/PostCard";
 const Home = () => {
   const { loading, error, data } = useQuery(FETCH_POSTS_QUERY);
-  if (data) {
-    console.log(data);
-  }
   if (loading) return <p>Loading</p>;
   if (error) return <p>error</p>;
   return (
@@ -26,7 +23,7 @@ const Home = () => {
               {/* <Image src="https://}react.semantic-ui.com/images/wireframe/media-paragraph.png" /> */}
             </Grid.Column>
           ))
-        )} 
+        )}
       </Grid.Row>
     </Grid>
   );

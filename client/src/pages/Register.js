@@ -1,29 +1,33 @@
 import { useMutation } from "@apollo/client";
 import gql from "graphql-tag";
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { Form, Button } from "semantic-ui-react";
+import { useForm } from "../util/hooks";
 
-const Register = () => {
-  const onChange = (e) => {
-    // console.log(e.name);
-    setValues({ ...values, [e.target.name]: e.target.value });
-  };
-  const [values, setValues] = useState({
+const Register = (props) => {
+  const navigate = useNavigate();
+  const [errors, setErrors] = useState({});
+
+  const { onChange, onSubmit, values } = useForm(registerUser, {
     username: "",
     password: "",
     email: "",
     confirmPassword: "",
   });
+
   const [addUser, { loading }] = useMutation(REGISTER_USER, {
-    update(proxy, result) {
-      console.warn("ress", result);
+    update(_, result) {
+      navigate("/");
+    },
+    onError(err) {
+      setErrors(err.graphQLErrors[0].extensions.errors);
     },
     variables: values,
   });
-  const onSubmit = (e) => {
-    e.preventDefault();
+  function registerUser() {
     addUser();
-  };
+  }
   return (
     <div className="form-container">
       <Form onSubmit={onSubmit} noValidate className={loading ? "loading" : ""}>
@@ -64,6 +68,15 @@ const Register = () => {
           Register
         </Button>
       </Form>
+      {Object.keys(errors).length > 0 && (
+        <div className="ui error message">
+          <ul className="list">
+            {Object.values(errors).map((value) => (
+              <li key={value}>{value}</li>
+            ))}
+          </ul>
+        </div>
+      )}
     </div>
   );
 };
