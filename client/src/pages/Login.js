@@ -1,10 +1,13 @@
 import { useMutation } from "@apollo/client";
 import gql from "graphql-tag";
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { Form, Button } from "semantic-ui-react";
+import { AuthContext } from "../context/auth";
 import { useForm } from "../util/hooks";
+
 const Login = (props) => {
+  const context = useContext(AuthContext);
   const navigate = useNavigate();
   const [errors, setErrors] = useState({});
   const { onChange, onSubmit, values } = useForm(loginUserCallback, {
@@ -13,8 +16,9 @@ const Login = (props) => {
   });
 
   const [loginUser, { loading }] = useMutation(LOGIN_USER, {
-    update(_, result) {
-      console.warn("ress", result);
+    update(_, { data: { login: userData } }) {
+      console.warn("ress", userData);
+      context.login(userData);
       navigate("/");
     },
     onError(er) {
@@ -66,14 +70,8 @@ const Login = (props) => {
   );
 };
 const LOGIN_USER = gql`
-  mutation login(
-    $username: String!
-    $password: String!
-    ){
-    login(
-      username: $username
-      password: $password
-      ) {
+  mutation login($username: String!, $password: String!) {
+    login(username: $username, password: $password) {
       id
       createdAt
       email
