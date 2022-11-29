@@ -2,12 +2,12 @@ import { AuthContext } from "../context/auth";
 import { Route, Navigate } from "react-router-dom";
 import { useContext } from "react";
 
-function AuthRoute({ element: Component, ...rest }) {
+function AuthRoute({ component: Component, ...rest }) {
   const { user } = useContext(AuthContext);
   return (
     <Route
       {...rest}
-      render={(props) =>
+        render={(props) =>
         user ? <Navigate to="/" /> : <Component {...props} />
       }
     />
