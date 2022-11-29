@@ -1,13 +1,13 @@
-import React from "react";
-import gql from "graphql-tag";
+import React, { useContext } from "react";
 import { useQuery } from "@apollo/react-hooks";
 import { Grid, Image } from "semantic-ui-react";
 import PostCard from "../components/PostCard";
+import { AuthContext } from "../context/auth";
+import PostForm from "../components/PostForm";
+import { FETCH_POSTS_QUERY } from "../util/graphql";
 const Home = () => {
   const { loading, error, data } = useQuery(FETCH_POSTS_QUERY);
-  if (data) {
-    console.log(data);
-  }
+  const { user } = useContext(AuthContext);
   if (loading) return <p>Loading</p>;
   if (error) return <p>error</p>;
   return (
@@ -16,6 +16,11 @@ const Home = () => {
         <h1>Recent Posts</h1>
       </Grid.Row>
       <Grid.Row>
+        {user && (
+          <Grid.Column>
+            <PostForm />
+          </Grid.Column>
+        )}
         {loading ? (
           <p>Loading </p>
         ) : (
@@ -31,32 +36,5 @@ const Home = () => {
     </Grid>
   );
 };
-
-const FETCH_POSTS_QUERY = gql`
-  {
-    getPosts {
-      id
-      body
-      createdAt
-      username
-      commentCount
-      likeCount
-      likes {
-        id
-      }
-      comments {
-        username
-      }
-    }
-  }
-  # {
-  #   getPosts {
-  #     id
-  #     body
-  #     likeCount
-  #     commentCount
-  #   }
-  # }
-`;
 
 export default Home;
